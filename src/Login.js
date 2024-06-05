@@ -1,12 +1,22 @@
-import { useRef, useState, useEffect, useContext } from 'react';
-import AuthContext from "./context/AuthProvider";
+import { useRef, useState, useEffect } from 'react';
+
+import useAuth from "./hooks/useAuth";
+
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import axios from './api/axios';
+
 const LOGIN_URL = '/auth';
 
 const Login = () => {
 
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
+
+    const navigate = useNavigate();
+
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+
     const userRef = useRef();
     const errRef = useRef();
 
@@ -46,7 +56,7 @@ const Login = () => {
             
             setUsername('');
             setPassword('');
-            setIsSuccess(true);
+            navigate(from, { replace: true });
 
         } catch (err) {
             
@@ -65,49 +75,39 @@ const Login = () => {
 
     return (
         <>
-            {isSuccess ? (
-                <section>
-                    <h1>You are logged in!</h1>
-                    <br />
-                    <p>
-                        <a href="#">Go to Home</a>
-                    </p>
-                </section>
-            ) : (
-                <section>
-                    <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
-                    <h1>Sign In</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text"
-                            id="username"
-                            ref={userRef}
-                            autoComplete="off"
-                            onChange={(e) => setUsername(e.target.value)}
-                            value={username}
-                            required
-                        />
+            <section>
+                <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
+                <h1>Sign In</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        ref={userRef}
+                        autoComplete="off"
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
+                        required
+                    />
 
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            required
-                        />
-                        <button>Sign In</button>
-                    </form>
-                    <p>
-                        Need an Account?<br />
-                        <span className="line">
-                            {/*put router link here*/}
-                            <a href="#">Sign Up</a>
-                        </span>
-                    </p>
-                </section>
-            )}
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                        required
+                    />
+                    <button>Sign In</button>
+                </form>
+                <p>
+                    Need an Account?<br />
+                    <span className="line">
+                        {/*put router link here*/}
+                        <a href="#">Sign Up</a>
+                    </span>
+                </p>
+            </section>
         </>
     )
 }

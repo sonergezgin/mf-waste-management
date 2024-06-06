@@ -44,6 +44,7 @@ const Register = () => {
 
     const [faculties, setFaculties] = useState([]);
 
+    const [choosenFacultyId, setChoosenFacultyId] = useState("")
 
     // when the page reloads
     /* useEffect(() => {
@@ -128,9 +129,10 @@ const Register = () => {
                     lastName: lastName,
                     password: password,
                     phone: {
-                        phoneCode : phoneCode,
+                        phoneCountry : phoneCode,
                         phoneNumber : phoneNumber
-                    }
+                    },
+                    facultyId : choosenFacultyId,
                     }),
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -263,7 +265,9 @@ const Register = () => {
                             Must match the first password input field.
                         </p>
 
-                        <Form.Select className="wasteInput" aria-label="Default select example">
+                        <Form.Select className="wasteInput" 
+                        aria-label="Default select example"
+                        onChange = {(e) => setChoosenFacultyId(e.target.value)}>
                             <option>Choose the faculty:</option>
                             {faculties.map( (eachFaculty) => (
                                 <option value = {eachFaculty.value}>{eachFaculty.title}</option>

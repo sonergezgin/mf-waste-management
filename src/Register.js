@@ -135,10 +135,11 @@ const Register = () => {
                     facultyId : choosenFacultyId,
                     }),
                 {
+                    baseUrl: "https://localhost:7299",
                     headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
                 }
             );
+            console.log(response)
             console.log(response?.data);
             console.log(response?.accessToken);
             console.log(JSON.stringify(response))

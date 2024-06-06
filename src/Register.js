@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
-
 import axios from "axios";
 
 // minimum 8 maximum 16 letters for password
@@ -41,6 +40,9 @@ const Register = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
 
+    const [faculties, setFaculties] = useState([]);
+
+
     // when the page reloads
     useEffect(() => {
         firstNameRef.current.focus();
@@ -66,6 +68,40 @@ const Register = () => {
     }, [password, passwordAgain])
 
 
+    useEffect( () => {
+
+        fetchFaculties();
+    })
+
+    const fetchFaculties = async() => {
+
+        const FACULTY_URL = 'api/Faculty';
+
+        try {
+            const response = await axios.get(FACULTY_URL);
+
+            console.log(JSON.stringify(response?.data));
+
+            const facultiesData = response?.data 
+                ? response.data.data
+                : [];
+            
+            setFaculties(facultiesData);
+
+        } catch (err) {
+            
+            if (!err?.response) {
+                setErrorMessage('Server does NOT respond.');
+            } else if (err.response?.status === 400) {
+                setErrorMessage('Username or password is missing.');
+            } else if (err.response?.status === 401) {
+                setErrorMessage('Unauthorized.');
+            } else {
+                setErrorMessage('Something went wrong.');
+            }
+
+
+    }
 
     const handleSubmit = async (e) => {
         
@@ -226,6 +262,13 @@ const Register = () => {
                             <FontAwesomeIcon icon={faInfoCircle} />
                             Must match the first password input field.
                         </p>
+
+                        <Form.Select className="wasteInput" aria-label="Default select example">
+                            <option>Choose the faculty:</option>
+                            {faculties.map( (eachFaculty) => {
+                                <option value = {eachFaculty.value}>{eachFaculty.title}</option>
+                            })}
+                        </Form.Select>
 
                         <button disabled={!isValidPassword || !isValidPasswordAgain ? true : false}>Sign Up</button>
                     </form>

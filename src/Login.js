@@ -11,6 +11,8 @@ import 'react-phone-input-2/lib/style.css'
 
 const LOGIN_URL = 'api/Auth/login';
 
+const PHONE_COUNTRY = "90";
+
 const Login = () => {
 
     const { setAuth, persist, setPersist } = useAuth();
@@ -22,7 +24,7 @@ const Login = () => {
 
     const errRef = useRef();
 
-    const [phone, setPhone] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
 
     const [password, setPassword] = useState('');
     
@@ -33,15 +35,17 @@ const Login = () => {
 
     useEffect(() => {
         setErrorMessage('');
-    }, [phone, password])
+    }, [phoneNumber, password])
 
     const handleSubmit = async (e) => {
         
         e.preventDefault();
-
+        
+        
+        
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ phone, password }),
+                JSON.stringify({ phone : PHONE_COUNTRY + phoneNumber, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     // withCredentials: true
@@ -54,9 +58,10 @@ const Login = () => {
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
             
-            setAuth({ phone, password, roles, accessToken });
+            const phoneInfo = PHONE_COUNTRY + phoneNumber
+            setAuth({ phoneInfo, password, roles, accessToken });
             
-            setPhone('');
+            setPhoneNumber('');
             setPassword('');
             navigate(from, { replace: true });
 
@@ -93,13 +98,12 @@ const Login = () => {
                             Phone:
                     </label>
                     <PhoneInput
-
                     country={'tr'}
                     disableCountryCode = {true}
                     placeholder = {"+90 521 16 32"}
-                    value={phone}
+                    value={phoneNumber}
                     onlyCountries = {['tr']}
-                    onChange={e => setPhone(e)}
+                    onChange={e => setPhoneNumber(e)}
                     />
 
                     <label htmlFor="password">Password:</label>

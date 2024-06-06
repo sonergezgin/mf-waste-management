@@ -5,7 +5,7 @@ import Login from "./Login";
 
 import Home from './components/Home';
 import Layout from './components/Layout';
-import Editor from './components/Editor';
+import Worker from './components/Worker';
 import Admin from './components/Admin';
 import Missing from './components/Missing';
 import Unauthorized from './components/Unauthorized';
@@ -17,7 +17,7 @@ import { Routes, Route } from 'react-router-dom';
 
 const ROLES = {
   'User' : 2001,
-  'Editor' : 1984,
+  'Worker' : 1984,
   'Admin' : 5150
 }
 
@@ -41,8 +41,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-            <Route path="editor" element={<Editor />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.Worker]} />}>
+            <Route path="worker" element={<Worker />} />
           </Route>
 
 
@@ -50,7 +50,7 @@ const App = () => {
             <Route path="admin" element={<Admin />} />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Worker, ROLES.Admin]} />}>
             <Route path="lounge" element={<Lounge />} />
           </Route>
         </Route>

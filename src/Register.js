@@ -79,7 +79,7 @@ const Register = () => {
 
         const FACULTY_URL = '/api/Faculty';
         try {
-            const response = await axios.get(FACULTY_URL, {baseURL: 'http://localhost:7299'});
+            const response = await axios.get(FACULTY_URL, {baseURL: 'https://localhost:7299'});
 
             console.log(JSON.stringify(response?.data));
 

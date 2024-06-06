@@ -3,26 +3,30 @@ import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+
+
 import axios from "axios";
-
-
-// minimum 4 maximum 24 letters for username
-const USERNAME_REGEX_EXPRESSION = /^[A-z][A-z0-9-_]{4,16}$/;  
 
 // minimum 8 maximum 16 letters for password
 const PASSWORD_REGEX_EXPRESSION = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%*]).{8,16}$/;
-
 
 const REGISTER_URL = '/register';
 
 const Register = () => {
 
-    const userRef = useRef();
+    const firstNameRef = useRef();
     const errRef = useRef();
 
-    const [username, setUserName] = useState('');
-    const [isValidUsername, setIsValidUserName] = useState(false);
-    const [isUserNameFocused, setIsUserNameFocused] = useState(false);
+    // const [username, setUserName] = useState('');
+    // const [isValidUsername, setIsValidUserName] = useState(false);
+    // const [isUserNameFocused, setIsUserNameFocused] = useState(false);
+
+    const [firstName, setFirstName] = useState('');
+    const [isFirstNameFocused, setIsFirstNameFocused] = useState(false);
+
+    const [lastName, setLastName] = useState('');
 
     const [password, setPassword] = useState('');
     const [isValidPassword, setIsValidPassword] = useState(false);
@@ -32,24 +36,15 @@ const Register = () => {
     const [isValidPasswordAgain, setIsValidPasswordAgain] = useState(false);
     const [isPasswordAgainFocused, setIsPasswordAgainFocused] = useState(false);
 
+    const [phone, setPhone] = useState('');
+
     const [errorMessage, setErrorMessage] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
 
     // when the page reloads
     useEffect(() => {
-        userRef.current.focus();
+        firstNameRef.current.focus();
     }, [])
-
-    // when the username input is changed
-    useEffect(() => {
-
-        const isUsernameValid = USERNAME_REGEX_EXPRESSION.test(username);
-
-        console.log(isUsernameValid);
-        console.log(username); 
-        
-        setIsValidUserName(isUsernameValid);
-    }, [username])
 
     // when either password-one or password-two inputs are changed
     useEffect(() => {
@@ -68,7 +63,7 @@ const Register = () => {
     // when either one of those username, password-one, password-two two inputs are changed
     useEffect(() => {
         setErrorMessage('');
-    }, [username, password, passwordAgain])
+    }, [password, passwordAgain])
 
 
 
@@ -77,8 +72,30 @@ const Register = () => {
         e.preventDefault();
         
         try {
+
+            const phoneCode = phone.substring(0,2);
+            const phoneNumber = phone.substring(2, phone.length);
+
+            console.log(JSON.stringify({ 
+                firstName : firstName,
+                lastName: lastName,
+                password: password,
+                phone: {
+                    phoneCode : phoneCode,
+                    phoneNumber : phoneNumber
+                }
+                }))
+            
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ userName: username, password: password }),
+                JSON.stringify({ 
+                    firstName : firstName,
+                    lastName: lastName,
+                    password: password,
+                    phone: {
+                        phoneCode : phoneCode,
+                        phoneNumber : phoneNumber
+                    }
+                    }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -92,7 +109,7 @@ const Register = () => {
 
             //clear state and controlled inputs
             //need value attrib on inputs for this
-            setUserName('');
+            // setUserName('');
             setPassword('');
             setPasswordAgain('');
 
@@ -125,31 +142,45 @@ const Register = () => {
                     <h1>Register</h1>
                     
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">
-                            Username:
-                            <FontAwesomeIcon icon={faCheck} className={isValidUsername ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={isValidUsername || !username ? "hide" : "invalid"} />
+                        <label htmlFor="firstName">
+                            First Name:
                         </label>
                         <input
                             type="text"
-                            id="username"
-                            ref={userRef}
+                            id="firstName"
+                            ref={firstNameRef}
                             autoComplete="off"
-                            onChange={(e) => setUserName(e.target.value)}
-                            value={username}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            value={firstName}
                             required
-                            aria-invalid={isValidUsername ? "false" : "true"}
                             aria-describedby="uidnote"
-                            onFocus={() => setIsUserNameFocused(true)}
-                            onBlur={() => setIsUserNameFocused(false)}
+                            onFocus={() => setIsFirstNameFocused(true)}
+                            onBlur={() => setIsFirstNameFocused(false)}
                         />
-                        <p id="uidnote" className={isUserNameFocused && username && !isValidUsername ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            4 to 16 characters.<br />
-                            Must begin with a letter.<br />
-                            Letters, numbers, underscores, hyphens allowed.
-                        </p>
 
+                        <label htmlFor="lastName">
+                            Last Name:
+                        </label>
+                        <input
+                            type="text"
+                            id="lastName"
+                            autoComplete="off"
+                            onChange={(e) => setLastName(e.target.value)}
+                            value={lastName}
+                            required
+                            aria-describedby="uidnote"
+                        />
+
+                        <label htmlFor="phone">
+                            Phone:
+                        </label>
+
+                        <PhoneInput
+                        country={'tr'}
+                        value={phone}
+                        onlyCountries = {['tr']}
+                        onChange={e => setPhone(e)}
+                        />
 
                         <label htmlFor="password">
                             Password:
@@ -196,7 +227,7 @@ const Register = () => {
                             Must match the first password input field.
                         </p>
 
-                        <button disabled={!isValidUsername || !isValidPassword || !isValidPasswordAgain ? true : false}>Sign Up</button>
+                        <button disabled={!isValidPassword || !isValidPasswordAgain ? true : false}>Sign Up</button>
                     </form>
                     <p>
                         Already registered?<br />

@@ -6,6 +6,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import axios from './api/axios';
 
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+
 const LOGIN_URL = '/auth';
 
 const Login = () => {
@@ -17,21 +20,20 @@ const Login = () => {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-    const userRef = useRef();
     const errRef = useRef();
 
-    const [username, setUsername] = useState('');
+    const [phone, setPhone] = useState("");
+
     const [password, setPassword] = useState('');
+    
     const [errorMessage, setErrorMessage] = useState('');
+    
     const [isSuccess, setIsSuccess] = useState(false);
 
-    useEffect(() => {
-        userRef.current.focus();
-    }, [])
 
     useEffect(() => {
         setErrorMessage('');
-    }, [username, password])
+    }, [phone, password])
 
     const handleSubmit = async (e) => {
         
@@ -39,7 +41,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ username, password }),
+                JSON.stringify({ phone, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -52,9 +54,9 @@ const Login = () => {
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
             
-            setAuth({ username, password, roles, accessToken });
+            setAuth({ phone, password, roles, accessToken });
             
-            setUsername('');
+            setPhone('');
             setPassword('');
             navigate(from, { replace: true });
 
@@ -87,15 +89,17 @@ const Login = () => {
                 <p ref={errRef} className={errorMessage ? "errmsg" : "offscreen"} aria-live="assertive">{errorMessage}</p>
                 <h1>Sign In</h1>
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        ref={userRef}
-                        autoComplete="off"
-                        onChange={(e) => setUsername(e.target.value)}
-                        value={username}
-                        required
+                    <label htmlFor="phone">
+                            Phone:
+                    </label>
+                    <PhoneInput
+
+                    country={'tr'}
+                    disableCountryCode = {true}
+                    placeholder = {"+90 521 16 32"}
+                    value={phone}
+                    onlyCountries = {['tr']}
+                    onChange={e => setPhone(e)}
                     />
 
                     <label htmlFor="password">Password:</label>

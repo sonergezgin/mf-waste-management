@@ -135,7 +135,7 @@ const Register = () => {
                     facultyId : choosenFacultyId,
                     }),
                 {
-                    baseUrl: "https://localhost:7299",
+                    baseURL: "https://localhost:7299",
                     headers: { 'Content-Type': 'application/json' },
                 }
             );

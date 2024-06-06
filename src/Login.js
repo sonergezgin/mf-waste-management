@@ -9,7 +9,7 @@ import axios from './api/axios';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
-const LOGIN_URL = '/auth';
+const LOGIN_URL = 'api/Auth/login';
 
 const Login = () => {
 
@@ -44,7 +44,7 @@ const Login = () => {
                 JSON.stringify({ phone, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+                    // withCredentials: true
                 }
             );
 

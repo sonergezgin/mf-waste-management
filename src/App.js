@@ -15,6 +15,9 @@ import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/PersistLogin';
 import { Routes, Route } from 'react-router-dom';
 
+import WasteInput from "./components/WasteInput";
+
+
 const ROLES = {
   'User' : 2001,
   'Worker' : 1984,
@@ -34,6 +37,7 @@ const App = () => {
         <Route path="register" element={<Register />} />
         <Route path="linkpage" element={<LinkPage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
+        <Route path="wasteInput" element={<WasteInput />} />
 
         {/* we want to protect these routes */}
         <Route element={<PersistLogin />}>

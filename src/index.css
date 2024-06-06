@@ -133,9 +133,15 @@ button {
 .persistCheck label {
   margin: 0;
 }
- 
+
 [type="checkbox"] {
   height: 20px;
   width: 20px;
   margin: 0 5px 2px 2px;
+}
+
+.wasteInput {
+
+  height: 36px;
+  font-size: 24px
 }

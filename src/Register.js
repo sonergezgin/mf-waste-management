@@ -6,16 +6,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
+import Form from 'react-bootstrap/Form';
+
 import axios from "axios";
 
 // minimum 8 maximum 16 letters for password
 const PASSWORD_REGEX_EXPRESSION = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%*]).{8,16}$/;
 
-const REGISTER_URL = '/register';
+const REGISTER_URL = '/api/Auth/create-cleaning-staff';
 
 const Register = () => {
 
-    const firstNameRef = useRef();
+    // const firstNameRef = useRef();
     const errRef = useRef();
 
     // const [username, setUserName] = useState('');
@@ -44,9 +46,9 @@ const Register = () => {
 
 
     // when the page reloads
-    useEffect(() => {
+    /* useEffect(() => {
         firstNameRef.current.focus();
-    }, [])
+    }, []) */
 
     // when either password-one or password-two inputs are changed
     useEffect(() => {
@@ -71,14 +73,13 @@ const Register = () => {
     useEffect( () => {
 
         fetchFaculties();
-    })
+    }, [])
 
     const fetchFaculties = async() => {
 
-        const FACULTY_URL = 'api/Faculty';
-
+        const FACULTY_URL = '/api/Faculty';
         try {
-            const response = await axios.get(FACULTY_URL);
+            const response = await axios.get(FACULTY_URL, {baseURL: 'http://localhost:7299'});
 
             console.log(JSON.stringify(response?.data));
 
@@ -99,8 +100,7 @@ const Register = () => {
             } else {
                 setErrorMessage('Something went wrong.');
             }
-
-
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -184,7 +184,7 @@ const Register = () => {
                         <input
                             type="text"
                             id="firstName"
-                            ref={firstNameRef}
+                            // ref={firstNameRef}
                             autoComplete="off"
                             onChange={(e) => setFirstName(e.target.value)}
                             value={firstName}
@@ -265,9 +265,9 @@ const Register = () => {
 
                         <Form.Select className="wasteInput" aria-label="Default select example">
                             <option>Choose the faculty:</option>
-                            {faculties.map( (eachFaculty) => {
+                            {faculties.map( (eachFaculty) => (
                                 <option value = {eachFaculty.value}>{eachFaculty.title}</option>
-                            })}
+                            ))}
                         </Form.Select>
 
                         <button disabled={!isValidPassword || !isValidPasswordAgain ? true : false}>Sign Up</button>
@@ -285,5 +285,4 @@ const Register = () => {
     )
 }
 
-}
 export default Register;

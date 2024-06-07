@@ -20,8 +20,8 @@ import WasteInput from "./components/WasteInput";
 
 const ROLES = {
   'User' : 2001,
-  'Worker' : 1984,
-  'Admin' : 5150
+  'Worker' : "CLEANING_STAFF",
+  'Admin' : "ADMIN"
 }
 
 

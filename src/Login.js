@@ -42,7 +42,6 @@ const Login = () => {
         e.preventDefault();
         
         
-        
         try {
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ phone : PHONE_COUNTRY + phoneNumber, password }),

@@ -5,7 +5,6 @@ import Login from "./Login";
 
 import Home from './components/Home';
 import Layout from './components/Layout';
-import Worker from './components/Worker';
 import Admin from './components/Admin';
 import Missing from './components/Missing';
 import Unauthorized from './components/Unauthorized';
@@ -40,19 +39,13 @@ const App = () => {
         <Route path="unauthorized" element={<Unauthorized />} />
          
 
-
-
         {/* we want to protect these routes */}
         <Route element={<PersistLogin />}>
           
-          <Route element={<RequireAuth allowedRoles={[ROLES.Worker]} />}>
-            <Route path="worker" element={<Worker />} />
-          </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Worker]} />}>
             <Route path="wasteInput" element={<WasteInput />} />     
           </Route>
-
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
             <Route path="admin" element={<Admin />} />

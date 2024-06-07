@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 
@@ -19,6 +19,11 @@ const WasteInput = () => {
         navigate('/linkpage');
 
     }
+
+    useEffect(() => {
+        fetchWasteTypes()
+    }, [])
+
 
     const fetchWasteTypes = async () => {
 

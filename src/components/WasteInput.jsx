@@ -8,11 +8,44 @@ const WasteInput = () => {
     const navigate = useNavigate();
     const logout = useLogout()
 
+
+    const [wasteTypes, setWasteTypes] = useState([]);
+
     const signOut = async () => {
 
         await logout();
         navigate('/linkpage');
 
+    }
+
+    const fetchWasteTypes = async () => {
+
+        const WASTE_TYPE_URL = '/api/WasteType';
+
+        try {
+            const response = await axios.get(WASTE_TYPE_URL, { baseURL: 'https://localhost:7299' });
+
+            console.log(JSON.stringify(response?.data));
+
+            const wasteTypeData = response?.data
+                ? response.data.data
+                : [];
+
+            console.log("response is");
+            console.log(response);
+
+            setWasteTypes(wasteTypeData);
+
+        } catch (err) {
+
+            if (!err?.response) {
+                setErrorMessage('Server does NOT respond.');
+            } else if (err.response?.status === 401) {
+                setErrorMessage('Unauthorized.');
+            } else {
+                setErrorMessage('Something went wrong.');
+            }
+        }
     }
 
     return (
@@ -22,10 +55,11 @@ const WasteInput = () => {
 
 
             <Form.Select className="wasteInput" aria-label="Default select example">
-                <option>Enter the waste type</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+
+                <option>Choose the waste type:</option>
+                {wasteTypes.map((wasteType) => (
+                    <option value={wasteType.value}>{wasteType.title}</option>
+                ))}
             </Form.Select>
         </section>
     )

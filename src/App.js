@@ -19,7 +19,7 @@ import WasteInput from "./components/WasteInput";
 
 
 const ROLES = {
-  'User' : 2001,
+  // 'User' : 2001,
   'Worker' : "CLEANING_STAFF",
   'Admin' : "ADMIN"
 }
@@ -33,20 +33,24 @@ const App = () => {
       <Route path="/" element={<Layout />}>
 
         {/* public routes viewed by anyone not even needed to be user */}
+        <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="linkpage" element={<LinkPage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        <Route path="wasteInput" element={<WasteInput />} />
+         
+
+
 
         {/* we want to protect these routes */}
         <Route element={<PersistLogin />}>
-          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            <Route path="/" element={<Home />} />
+          
+          <Route element={<RequireAuth allowedRoles={[ROLES.Worker]} />}>
+            <Route path="worker" element={<Worker />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Worker]} />}>
-            <Route path="worker" element={<Worker />} />
+            <Route path="wasteInput" element={<WasteInput />} />     
           </Route>
 
 

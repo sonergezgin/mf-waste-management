@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 
 import Form from 'react-bootstrap/Form';
 
+import axios from "../api/axios";
 const WasteInput = () => {
 
     const navigate = useNavigate();
@@ -39,11 +41,11 @@ const WasteInput = () => {
         } catch (err) {
 
             if (!err?.response) {
-                setErrorMessage('Server does NOT respond.');
+                console.error('Server does NOT respond.');
             } else if (err.response?.status === 401) {
-                setErrorMessage('Unauthorized.');
+                console.error('Unauthorized.');
             } else {
-                setErrorMessage('Something went wrong.');
+                console.error('Something went wrong.');
             }
         }
     }

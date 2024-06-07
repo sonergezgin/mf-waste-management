@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 
 import Form from 'react-bootstrap/Form';
 
 import axios from "../api/axios";
 
+import useAuth from "../hooks/useAuth"
+
 
 const WasteInput = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.form?.pathname || "/";
+
     const logout = useLogout()
 
+
+    const { auth, persist } = useAuth();
 
     const [wasteTypes, setWasteTypes] = useState([]);
     const [weight, setWeight] = useState(0);
@@ -35,6 +42,8 @@ const WasteInput = () => {
         const WASTE_TYPE_URL = '/api/WasteType';
 
         try {
+            console.log("auth:", auth);
+
             const response = await axios.get(WASTE_TYPE_URL, { baseURL: 'https://localhost:7299' });
 
             console.log(JSON.stringify(response?.data));
@@ -60,6 +69,7 @@ const WasteInput = () => {
         }
     }
 
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -70,8 +80,8 @@ const WasteInput = () => {
             const response = await axios.post(WASTE_ADD_URL,
                 JSON.stringify({ wasteTypeId: choosenWasteType, weight: weight }),
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+                    headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${auth?.accessToken}` },
+                    // withCredentials: true
                 }
             );
 

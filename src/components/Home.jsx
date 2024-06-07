@@ -19,6 +19,8 @@ const Home = () => {
             <br />
             <p>You are logged in!</p>
             <br />
+            <Link to="/wasteInput">Go to the Worker page</Link>
+            <br />
             <Link to="/admin">Go to the Admin page</Link>
             <br />
             <Link to="/lounge">Go to the Lounge</Link>

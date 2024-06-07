@@ -15,6 +15,7 @@ import PersistLogin from './components/PersistLogin';
 import { Routes, Route } from 'react-router-dom';
 
 import WasteInput from "./components/WasteInput";
+import Statistics from "./components/Statistics";
 
 
 const ROLES = {
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="linkpage" element={<LinkPage />} />
+        <Route path = "statistics" element = {<Statistics/>} />
         <Route path="unauthorized" element={<Unauthorized />} />
          
 

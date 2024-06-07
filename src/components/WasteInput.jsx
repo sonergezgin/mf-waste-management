@@ -25,13 +25,6 @@ const WasteInput = () => {
 
     const [choosenWasteType, setChoosenWasteType] = useState("");
 
-    const signOut = async () => {
-
-        await logout();
-        navigate('/linkpage');
-
-    }
-
     useEffect(() => {
         fetchWasteTypes();
     }, [])
@@ -101,39 +94,38 @@ const WasteInput = () => {
         }
     }
 
+    return (
+        <section>
+            <h1>Waste Input</h1>
+            <br />
+
+            <form onSubmit={handleSubmit}>
+
+                <Form.Select
+                    className="wasteInput"
+                    aria-label="Default select example"
+                    onChange={(e) => setChoosenWasteType(e.target.value)}
+                    required>
+                    <option>Choose the waste type:</option>
+                    {wasteTypes.map((wasteType) => (
+                        <option value={wasteType.value}>{wasteType.title}</option>
+                    ))}
+                </Form.Select>
+
+                <label htmlFor="weight">Weight:</label>
+                <input
+                    type="number"
+                    id="weight"
+                    onChange={(e) => setWeight(e.target.value)}
+                    value={weight}
+                    required
+                />
+
+                <button>Enter</button>
+
+            </form>
+        </section>
+    )
+
 }
-return (
-    <section>
-        <h1>Waste Input</h1>
-        <br />
-
-        <form onSubmit={handleSubmit}>
-
-            <Form.Select
-                className="wasteInput"
-                aria-label="Default select example"
-                onChange={(e) => setChoosenWasteType(e.target.value)}
-                required>
-                <option>Choose the waste type:</option>
-                {wasteTypes.map((wasteType) => (
-                    <option value={wasteType.value}>{wasteType.title}</option>
-                ))}
-            </Form.Select>
-
-            <label htmlFor="weight">Weight:</label>
-            <input
-                type="number"
-                id="weight"
-                onChange={(e) => setWeight(e.target.value)}
-                value={weight}
-                required
-            />
-
-            <button>Enter</button>
-
-        </form>
-    </section>
-)
-
-
 export default WasteInput;

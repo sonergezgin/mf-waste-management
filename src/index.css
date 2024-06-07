@@ -146,3 +146,20 @@ button {
   height: 36px;
   font-size: 24px
 }
+
+:root {
+  --red-500: #f02f0d;
+  --yellow-500: #ffc107;
+  --green-500: #28a745;
+  --red-400: #d6744d;
+  --yellow-400: #e0a800;
+  --green-400: #218838;
+
+  --purple-500: #ce0df0;
+  --brown-500: #41330a;
+  --orange-500: #dfd519;
+  --purple-400: #ac19dc;
+  --brown-400: #977b27;
+  --orange-400: #dc8630;
+}
+

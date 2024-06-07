@@ -30,8 +30,6 @@ const Login = () => {
     
     const [errorMessage, setErrorMessage] = useState('');
     
-    const [isSuccess, setIsSuccess] = useState(false);
-
 
     useEffect(() => {
         setErrorMessage('');
